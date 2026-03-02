@@ -419,8 +419,7 @@ Make sure the services are running. Go back to [step 1.11.2](#1112-upd-start-the
 #### 1.16.2. (UPD) Prepare your VM for checking
 
 1. [Connect to your VM](../../wiki/vm.md#connect-to-the-vm).
-2. [Create the `autochecker` user](../../wiki/vm-autochecker.md#create-the-autochecker-user).
-3. [Add the instructor's `SSH` public key to the `autochecker` user](../../wiki/vm-autochecker.md#add-an-ssh-public-key-to-the-autochecker-user).
+2. [Set up your VM for the autochecker](../../wiki/vm-autochecker.md#set-up-the-vm-for-autochecker).
 
 ### 1.17. (UPD) Set up a coding agent
 
