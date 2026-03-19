@@ -270,15 +270,15 @@ See [tools](../../wiki/software-types.md#tool).
 
 ### 1.13. (UPD) Deploy the LMS API (REMOTE)
 
-1. [Deploy the LMS API to your VM](../../wiki/lms-api-deployment.md#about-the-lms-api-deployment).
+1. [Deploy the LMS API on your VM](../../wiki/lms-api-deployment.md#about-the-lms-api-deployment).
 
 ### 1.14. Set up the `Autochecker` bot
 
-[Set up the `Autochecker`](../../wiki/autochecker.md#set-up-the-autochecker)
+1. [Set up the `Autochecker` bot](../../wiki/autochecker.md#set-up-the-autochecker-bot)
 
 ### 1.15. Check the setup using the `Autochecker` bot
 
-[Check the task](../../wiki/autochecker.md#check-the-task-using-the-autochecker-bot).
+1. [Check the `Setup` task](../../wiki/autochecker.md#check-the-task-using-the-autochecker-bot).
 
 ---
 
