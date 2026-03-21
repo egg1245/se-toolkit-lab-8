@@ -8,8 +8,11 @@
   - [Documentation](#documentation)
   - [Docstring](#docstring)
 - [Package managers](#package-managers)
-  - [`uv`](#uv)
-    - [Install `uv`](#install-uv)
+- [`uv`](#uv)
+  - [Install `uv`](#install-uv)
+    - [Install `uv` using the commands from the official site](#install-uv-using-the-commands-from-the-official-site)
+    - [Install `uv` using `Nix`](#install-uv-using-nix)
+  - [Check that `uv` works](#check-that-uv-works)
 - [Quality assurance tools](#quality-assurance-tools)
   - [Dynamic analysis tools](#dynamic-analysis-tools)
     - [The `assert` statement](#the-assert-statement)
@@ -63,11 +66,16 @@ Docs:
 
 - [Package manager](./package-manager.md#what-is-a-package-manager)
 
-### `uv`
+## `uv`
 
 `uv` is a modern [package manager](./package-manager.md#what-is-a-package-manager) for [`Python`](#what-is-python).
 
-#### Install `uv`
+### Install `uv`
+
+- [Install `uv` using the commands from the official site](#install-uv-using-the-commands-from-the-official-site)
+- [Install `uv` using `Nix`](#install-uv-using-nix)
+
+#### Install `uv` using the commands from the official site
 
 1. [Check the current shell in the `VS Code Terminal`](./vs-code.md#check-the-current-shell-in-the-vs-code-terminal).
 
@@ -75,7 +83,23 @@ Docs:
 
 2. Follow the [installation instructions](https://docs.astral.sh/uv/getting-started/installation/) for [`macOS`](./operating-system.md#macos) and [`Linux`](./operating-system.md#linux), even if you use `Windows`.
 
-3. To check that `uv` is installed,
+#### Install `uv` using `Nix`
+
+1. [Install `Nix`](./nix.md#install-nix) if it's not yet installed.
+
+2. To install `uv` from [`nixpkgs`](./nix.md#nixpkgs),
+
+   [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
+
+   ```terminal
+   nix profile add nixpkgs#uv
+   ```
+
+3. [Check that `uv` works](#check-that-uv-works).
+
+### Check that `uv` works
+
+1. To check that `uv` works,
 
    [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
@@ -83,10 +107,10 @@ Docs:
    uv --version
    ```
 
-4. The output should be similar to this:
+2. The output should be similar to this:
 
    ```terminal
-   uv 0.10.4
+   uv 0.10.10
    ```
 
 ## Quality assurance tools
