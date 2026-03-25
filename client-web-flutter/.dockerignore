@@ -4,3 +4,8 @@ build
 .idea
 .vscode
 *.iml
+.env*
+.gitignore
+.dockerignore
+Dockerfile
+analysis_options.yaml
