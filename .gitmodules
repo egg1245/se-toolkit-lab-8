@@ -3,7 +3,7 @@
 	url = https://github.com/inno-se-toolkit/qwen-code-api-py
 [submodule "packages/nanobot-ai"]
 	path = packages/nanobot-ai
-	url = https://github.com/inno-se-toolkit/nanobot
+	url = https://github.com/HKUDS/nanobot.git
 	branch = main
 [submodule "nanobot-websocket-channel"]
 	path = nanobot-websocket-channel
