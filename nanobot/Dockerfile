@@ -7,12 +7,9 @@ WORKDIR /build
 # Copy workspace root
 COPY --from=workspace . .
 
-# Install git, clone nanobot-websocket-channel, and install all Python packages in ONE layer
+# Install git and all Python packages
 RUN apt-get update && apt-get install -y --no-install-recommends git && \
-  rm -rf nanobot-websocket-channel && \
-  git clone --depth 1 https://github.com/egg1245/se-toolkit-lab-8.git /tmp/repo && \
-  cp -r /tmp/repo/nanobot-websocket-channel /build/ && \
-  rm -rf /tmp/repo /var/lib/apt/lists/* && \
+  rm -rf /var/lib/apt/lists/* && \
   pip install --no-cache-dir -e ./mcp/mcp-lms && \
   pip install --no-cache-dir -e ./mcp/mcp-obs && \
   pip install --no-cache-dir -e ./nanobot-websocket-channel/nanobot-channel-protocol && \
