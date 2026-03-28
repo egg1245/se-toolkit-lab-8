@@ -13,8 +13,6 @@ dependencies = [
 [tool.hatch.build.targets.wheel]
 packages = ["src/nanobot_agent"]
 
-[tool.hatch.metadata]
-allow-direct-references = true
-
 [tool.uv]
 exclude-newer = "2025-03-28"
+
