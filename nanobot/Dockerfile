@@ -11,7 +11,9 @@ WORKDIR /build
 
 # Install local MCP packages FIRST (so they're available during nanobot build)
 RUN pip install --no-cache-dir -e /build/mcp/mcp-lms \
-  && pip install --no-cache-dir -e /build/mcp/mcp-obs
+  && pip install --no-cache-dir -e /build/mcp/mcp-obs \
+  && pip install --no-cache-dir -e /build/nanobot-websocket-channel/mcp-webchat \
+  && pip install --no-cache-dir -e /build/nanobot-websocket-channel/nanobot-webchat
 
 # Install nanobot-ai and nanobot-agent
 RUN pip install --no-cache-dir nanobot-ai \
