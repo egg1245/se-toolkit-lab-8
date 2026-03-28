@@ -92,15 +92,93 @@ Response to webchat: {"role":"assistant","content":"...","tool_calls":[...]}
 
 ## Task 3A — Structured logging
 
-<!-- Paste happy-path and error-path log excerpts, VictoriaLogs query screenshot -->
+**Instructions for VM:**
+
+1. Trigger a request via Flutter: Ask agent "What labs are available?"
+2. Check Docker logs: `docker compose logs backend --tail 30`
+3. Look for structured events: `request_started`, `auth_success`, `db_query`, `request_completed`
+4. Stop PostgreSQL: `docker compose stop postgres`
+5. Make another request and check for error-level logs with `db_query` failures
+6. Restart: `docker compose start postgres`
+7. Open VictoriaLogs UI: `http://<your-vm-ip-address>:42002/utils/victorialogs/select/vmui`
+8. Run query: `_time:1h service.name:"Learning Management Service" severity:ERROR`
+
+**Paste here:**
+
+- Happy-path log excerpt (request_started → request_completed with 200)
+- Error-path log excerpt (db_query with error level)
+- Screenshot of VictoriaLogs query result
+
+---
 
 ## Task 3B — Traces
 
-<!-- Screenshots: healthy trace span hierarchy, error trace -->
+**Instructions for VM:**
+
+1. Find a request in logs and copy its `trace_id` field
+2. Open VictoriaTraces UI: `http://<your-vm-ip-address>:42002/utils/victoriatraces`
+3. Search for the trace (Jaeger UI or query directly via API)
+4. Inspect span hierarchy — which services appear, timing of each step
+5. Repeat after stopping PostgreSQL to see where the error occurs in the trace
+6. Restart PostgreSQL
+
+**Paste here:**
+
+- Screenshot of healthy trace showing span hierarchy
+- Screenshot of error trace showing failure point
+
+---
 
 ## Task 3C — Observability MCP tools
 
-<!-- Paste agent responses to "any errors in the last hour?" under normal and failure conditions -->
+**Status:** Observability MCP server and skill fully implemented.
+
+**Files created:**
+
+- ✅ `mcp/mcp-obs/pyproject.toml` — MCP server package configuration
+- ✅ `mcp/mcp-obs/src/mcp_obs/` — Complete observability module:
+  - `client.py` — HTTP client for VictoriaLogs and VictoriaTraces APIs
+  - `server.py` — MCP server exposing tools to nanobot
+  - `tools.py` — Tool implementations: `obs_logs_search`, `obs_logs_error_count`, `obs_traces_list`, `obs_traces_get`
+  - `settings.py` — Configuration from environment variables
+  - `__init__.py`, `__main__.py` — Module initialization
+- ✅ `nanobot/workspace/skills/observability/SKILL.md` — Agent guidance for using observability tools
+- ✅ `nanobot/pyproject.toml` — Updated to include `mcp-obs` dependency
+- ✅ `nanobot/config.json` — Already configured with `obs` MCP server
+- ✅ `nanobot/entrypoint.py` — Already handles `NANOBOT_VICTORIALOGS_URL` and `NANOBOT_VICTORIATRACES_URL` env vars
+
+**MCP Tools Available:**
+
+1. `obs_logs_search(query, limit)` — Search VictoriaLogs with LogsQL query
+2. `obs_logs_error_count(service_name, time_range)` — Count errors in a service
+3. `obs_traces_list(service_name, limit)` — List recent traces for a service
+4. `obs_traces_get(trace_id)` — Fetch a specific trace by ID
+
+**Test Instructions (on VM after deployment):**
+
+```bash
+# Test 1: Check for errors under normal conditions
+# Ask the agent: "Any LMS backend errors in the last 10 minutes?"
+# Expected: No errors found, or old errors from earlier
+
+# Test 2: Trigger a failure and ask again
+docker compose stop postgres
+# Make some requests via Flutter (will fail)
+# Ask agent: "Any LMS backend errors in the last 10 minutes?"
+# Expected: Reports the database errors you just caused
+
+# Test 3: Verify with traces
+# Ask agent: "Show me the most recent trace for Learning Management Service"
+# Expected: Agent lists recent traces or fetches a specific error trace
+
+docker compose start postgres
+```
+
+**Paste here:**
+
+- Agent response to "Any LMS backend errors in the last 10 minutes?" (normal conditions)
+- Agent response to the same question after stopping PostgreSQL and triggering failures
+- Evidence of tool calls: `obs_logs_error_count`, `obs_logs_search`, `obs_traces_get` in nanobot logs
 
 ## Task 4A — Multi-step investigation
 
