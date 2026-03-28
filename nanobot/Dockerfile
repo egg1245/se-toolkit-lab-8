@@ -13,6 +13,10 @@ WORKDIR /build
 RUN pip install --no-cache-dir -e /build/mcp/mcp-lms \
   && pip install --no-cache-dir -e /build/mcp/mcp-obs
 
+# Install nanobot-channel-protocol and nanobot-webchat
+RUN pip install --no-cache-dir -e /build/nanobot-websocket-channel/nanobot-channel-protocol \
+  && pip install --no-cache-dir -e /build/nanobot-websocket-channel/nanobot-webchat
+
 # Install nanobot-ai and nanobot-agent
 RUN pip install --no-cache-dir nanobot-ai \
   && pip install --no-cache-dir -e /build/nanobot
