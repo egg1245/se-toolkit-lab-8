@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "LMS agent powered by nanobot-ai"
 dependencies = [
   "nanobot-ai",
+  "nanobot-webchat",
 ]
 
 [tool.hatch.build.targets.wheel]

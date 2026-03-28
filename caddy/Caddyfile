@@ -20,7 +20,7 @@
     respond @unknown-utils "Not Found" 404
 
     # Task 2B — Flutter routes (serve before React catch-all)
-    handle /flutter* {
+    handle_path /flutter* {
         root * /srv/flutter
         try_files {path} /index.html
         file_server
