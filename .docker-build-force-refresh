@@ -1,0 +1,3 @@
+# Fix Docker build relative path issues - force refresh on VM
+
+This commit forces rebuild with absolute paths only.
