@@ -4,20 +4,20 @@ FROM ${REGISTRY_PREFIX_DOCKER_HUB}python:3.12-slim
 
 WORKDIR /build
 
-# Copy workspace root with all subdirectories
+# Copy everything from workspace root
 COPY --from=workspace . .
 
-# Verify all directories are present
-RUN ls -la . | head -20 && echo "---" && ls -la nanobot-websocket-channel/ 2>&1 | head -10
+# Check what we have
+RUN ls -la nanobot-websocket-channel/nanobot-channel-protocol/ 2>&1 | head -5 || echo "NOT FOUND!"
 
 # Install local MCP packages FIRST (so they're available during nanobot build)
 RUN pip install --no-cache-dir -e ./mcp/mcp-lms \
   && pip install --no-cache-dir -e ./mcp/mcp-obs
 
-# Install nanobot-channel-protocol and nanobot-webchat from subdirectories
-RUN pip install --no-cache-dir \
-    -e ./nanobot-websocket-channel/nanobot-channel-protocol \
-    -e ./nanobot-websocket-channel/nanobot-webchat
+# Install nanobot-channel-protocol and nanobot-webchat
+# Since they're local projects with pyproject.toml, use direct paths
+RUN cd nanobot-websocket-channel/nanobot-channel-protocol && pip install --no-cache-dir -e . && cd /build && \
+    cd nanobot-websocket-channel/nanobot-webchat && pip install --no-cache-dir -e . && cd /build
 
 # Install nanobot-ai and nanobot-agent
 RUN pip install --no-cache-dir nanobot-ai \
