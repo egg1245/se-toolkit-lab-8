@@ -1,0 +1,37 @@
+Task 3C — Observability MCP Tools Implementation
+COMPLETE AND READY FOR DEPLOYMENT
+
+Files Created:
+✅ mcp/mcp-obs/pyproject.toml
+✅ mcp/mcp-obs/src/mcp_obs/__init__.py
+✅ mcp/mcp-obs/src/mcp_obs/__main__.py
+✅ mcp/mcp-obs/src/mcp_obs/client.py
+✅ mcp/mcp-obs/src/mcp_obs/server.py
+✅ mcp/mcp-obs/src/mcp_obs/settings.py
+✅ mcp/mcp-obs/src/mcp_obs/tools.py
+✅ nanobot/workspace/skills/observability/SKILL.md
+
+Files Modified:
+✅ nanobot/pyproject.toml (added mcp-obs dependency)
+✅ REPORT.md (added Task 3A/3B/3C documentation)
+
+MCP Tools Registered:
+✅ obs_logs_search
+✅ obs_logs_error_count
+✅ obs_traces_list
+✅ obs_traces_get
+
+Integration Status:
+✅ nanobot/config.json has "obs" MCP server configured
+✅ nanobot/entrypoint.py injects VICTORIALOGS and VICTORIATRACES URLs
+✅ All env vars properly handled in docker-compose.yml
+
+Deployment Instructions:
+1. git pull origin main (to get latest code)
+2. docker compose build nanobot (rebuild with new dependencies)
+3. docker compose up -d (redeploy)
+4. Verify with: docker compose logs nanobot | grep obs_logs
+
+Test Query:
+"Any LMS backend errors in the last 10 minutes?"
+Expected: Agent uses obs_logs_error_count tool to check
