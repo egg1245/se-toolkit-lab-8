@@ -7,32 +7,18 @@ WORKDIR /build
 # Copy workspace root
 COPY --from=workspace . .
 
-# CRITICAL FIX: Install git and clone nanobot-websocket-channel in ONE command
-# (gitsubmodules don't get copied via COPY --from=workspace due to git config)
+# Install git, clone nanobot-websocket-channel, and install all Python packages in ONE layer
 RUN apt-get update && apt-get install -y --no-install-recommends git && \
-  echo "Checking if nanobot-websocket-channel is populated..." && \
-  if [ ! -d nanobot-websocket-channel ] || [ -z "$(find nanobot-websocket-channel -name 'pyproject.toml' 2>/dev/null)" ]; then \
-    echo "nanobot-websocket-channel not found or empty. Cloning from GitHub..."; \
-    rm -rf nanobot-websocket-channel; \
-    git clone --depth 1 https://github.com/egg1245/se-toolkit-lab-8.git /tmp/repo && \
-    cp -r /tmp/repo/nanobot-websocket-channel /build/ && \
-    rm -rf /tmp/repo; \
-  else \
-    echo "nanobot-websocket-channel found and populated."; \
-  fi && \
-  rm -rf /var/lib/apt/lists/*
-
-# Install local MCP packages FIRST (so they're available during nanobot build)
-RUN pip install --no-cache-dir -e ./mcp/mcp-lms \
-  && pip install --no-cache-dir -e ./mcp/mcp-obs
-
-# Install nanobot-channel-protocol and nanobot-webchat
-RUN pip install --no-cache-dir -e ./nanobot-websocket-channel/nanobot-channel-protocol && \
-    pip install --no-cache-dir -e ./nanobot-websocket-channel/nanobot-webchat
-
-# Install nanobot-ai and nanobot-agent
-RUN pip install --no-cache-dir nanobot-ai \
-  && pip install --no-cache-dir -e ./nanobot
+  rm -rf nanobot-websocket-channel && \
+  git clone --depth 1 https://github.com/egg1245/se-toolkit-lab-8.git /tmp/repo && \
+  cp -r /tmp/repo/nanobot-websocket-channel /build/ && \
+  rm -rf /tmp/repo /var/lib/apt/lists/* && \
+  pip install --no-cache-dir -e ./mcp/mcp-lms && \
+  pip install --no-cache-dir -e ./mcp/mcp-obs && \
+  pip install --no-cache-dir -e ./nanobot-websocket-channel/nanobot-channel-protocol && \
+  pip install --no-cache-dir -e ./nanobot-websocket-channel/nanobot-webchat && \
+  pip install --no-cache-dir nanobot-ai && \
+  pip install --no-cache-dir -e ./nanobot
 
 # Copy config and entrypoint
 WORKDIR /app
