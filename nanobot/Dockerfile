@@ -6,11 +6,13 @@ WORKDIR /app
 
 # Install project dependencies directly with pip from workspace
 COPY --from=workspace . /build
+# Ensure nanobot-websocket-channel is fully copied with all subdirectories
+COPY --from=workspace nanobot-websocket-channel nanobot-websocket-channel
 
 WORKDIR /build
 
-# List what was copied (for debugging)
-RUN ls -la /build/ | head -20 && echo "---" && ls -la /build/nanobot-websocket-channel 2>&1 || echo "nanobot-websocket-channel not found, checking mcp..."
+# Verify directory contents
+RUN echo "=== /build contents ===" && ls -la /build/nanobot-websocket-channel/ && echo "=== checking channel-protocol ===" && ls -la /build/nanobot-websocket-channel/nanobot-channel-protocol/ 2>&1 | head -10
 
 # Install local MCP packages FIRST (so they're available during nanobot build)
 RUN pip install --no-cache-dir -e /build/mcp/mcp-lms \
