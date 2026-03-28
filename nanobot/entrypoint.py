@@ -26,10 +26,23 @@ def main():
     config["gateway"]["host"] = os.environ.get("NANOBOT_GATEWAY_CONTAINER_ADDRESS", "0.0.0.0")
     config["gateway"]["port"] = int(os.environ.get("NANOBOT_GATEWAY_CONTAINER_PORT", "18790"))
     
+    # Inject webchat channel configuration
+    if "channels" not in config:
+        config["channels"] = {}
+    if "webchat" not in config["channels"]:
+        config["channels"]["webchat"] = {
+            "enabled": True,
+            "allowFrom": ["*"]
+        }
+    config["channels"]["webchat"]["host"] = os.environ.get("NANOBOT_WEBCHAT_CONTAINER_ADDRESS", "0.0.0.0")
+    config["channels"]["webchat"]["port"] = int(os.environ.get("NANOBOT_WEBCHAT_CONTAINER_PORT", "8001"))
+    config["channels"]["webchat"]["access_key"] = os.environ.get("NANOBOT_ACCESS_KEY", "")
+    
     if "mcpServers" not in config["tools"]:
         config["tools"]["mcpServers"] = {}
     
-    for mcp_name in ["lms", "obs"]:
+    # Configure lms, obs, and webchat MCP servers
+    for mcp_name in ["lms", "obs", "webchat"]:
         if mcp_name not in config["tools"]["mcpServers"]:
             config["tools"]["mcpServers"][mcp_name] = {
                 "command": "python",
