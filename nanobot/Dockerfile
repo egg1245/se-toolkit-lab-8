@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Install project dependencies directly with pip from workspace
 COPY --from=workspace . /build
+COPY --from=workspace nanobot-websocket-channel /build/nanobot-websocket-channel
 
 WORKDIR /build
 
