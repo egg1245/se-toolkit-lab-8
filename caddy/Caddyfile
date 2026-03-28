@@ -1,6 +1,10 @@
 # See wiki/caddy.md
 
 :{$CADDY_CONTAINER_PORT} {
+    log {
+        output stdout
+        level debug
+    }
     @public-utils-denied {
         path /utils/pgadmin* /utils/victorialogs* /utils/victoriatraces*
         not remote_ip private_ranges
@@ -14,6 +18,13 @@
     respond @public-utils-denied "Forbidden" 403
     # Deny any other /utils routes so they don't fall through to the SPA.
     respond @unknown-utils "Not Found" 404
+
+    # Task 2B — Flutter routes (serve before React catch-all)
+    handle /flutter* {
+        root * /srv/flutter
+        try_files {path} /index.html
+        file_server
+    }
 
     handle /items* {
         reverse_proxy http://backend:{$BACKEND_CONTAINER_PORT}
@@ -49,14 +60,8 @@
     handle /openapi.json {
         reverse_proxy http://backend:{$BACKEND_CONTAINER_PORT}
     }
-    # Task 2B — uncomment once the Flutter build output is mounted at /srv/flutter.
-    handle_path /flutter* {
-        root * /srv/flutter
-        try_files {path} /index.html
-        file_server
-    }
     handle {
-        root * /srv/react
+        root * /srv/flutter
         try_files {path} /index.html
         file_server
     }
