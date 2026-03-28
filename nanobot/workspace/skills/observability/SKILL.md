@@ -33,6 +33,25 @@ When asked about system health, errors, or failures:
    - How long each step took
    - Where the error actually occurred (which service failed, what was the error message)
 
+## Special Patterns
+
+**When asked "What went wrong?":**
+
+- This is a deep investigation request. Always:
+  1. Check error_count for the LMS/backend service in the last 10-15 minutes
+  2. If errors found, search for specific error logs to get service names and timestamps
+  3. Extract trace_id from error logs
+  4. Fetch the full trace to see the complete request flow and actual error
+  5. Provide a summary that cites both log evidence AND trace evidence
+  6. Be specific: include service names, error messages, timestamps, and what operation failed
+
+**When asked to create proactive health checks:**
+
+- Use the built-in `cron` tool with action "add"
+- Set appropriate time intervals (e.g., "every 2 minutes")
+- Schedule the health check to call logs_error_count + logs_search + traces_get as needed
+- Ensure reports are posted back to the chat automatically
+
 ## Response Guidelines
 
 **Always:**
@@ -48,13 +67,15 @@ When asked about system health, errors, or failures:
 **Example Responses:**
 
 *Healthy system:*
+
 > "No errors in the Learning Management Service in the last 10 minutes. The backend is healthy."
 
 *With errors:*
+
 > "Found 3 errors in the Learning Management Service in the last 10 minutes:
 > 1. Database connection failed at 14:32:15 (PostgreSQL unreachable)
 > 2. Failed request: GET /items/ returned 500 (trace: abc123def456)
->
+> 
 > The errors appear to be database connectivity issues. Check if PostgreSQL is running."
 
 ## Tips
