@@ -9,7 +9,12 @@ COPY --from=workspace . /build
 
 WORKDIR /build
 
-RUN pip install --no-cache-dir nanobot-ai
+# Install nanobot-ai and local MCP packages
+RUN pip install --no-cache-dir nanobot-ai \
+  && pip install --no-cache-dir -e ./mcp/mcp-lms \
+  && pip install --no-cache-dir -e ./mcp/mcp-obs \
+  && pip install --no-cache-dir -e ./nanobot-websocket-channel/nanobot-webchat \
+  && pip install --no-cache-dir -e ./nanobot-websocket-channel/mcp-webchat
 
 # Copy config and entrypoint
 WORKDIR /app
