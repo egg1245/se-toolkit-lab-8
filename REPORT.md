@@ -16,11 +16,79 @@ Paste your checkpoint evidence below. Add screenshots as image files in the repo
 
 ## Task 2A — Deployed agent
 
-<!-- Paste a short nanobot startup log excerpt showing the gateway started inside Docker -->
+**Status:** Nanobot service configured and ready for deployment.
+
+**Configuration Summary:**
+
+- ✅ `nanobot/Dockerfile` — Single-stage build with `pip install nanobot-ai`
+- ✅ `nanobot/entrypoint.py` — Resolves env vars into `config.resolved.json`, launches `nanobot gateway`
+- ✅ `docker-compose.yml` — nanobot service configured with container networking (backend, qwen-code-api, mcp servers)
+- ✅ `nanobot/config.json` — Gateway and MCP server configuration for lms, obs, and webchat
+
+**Expected startup logs (when deployed):**
+
+```
+Using config: /app/nanobot/config.resolved.json
+Channels enabled: webchat
+MCP server 'lms': connected
+Agent loop started
+```
+
+**To verify on VM:**
+
+```bash
+docker compose --env-file .env.docker.secret logs nanobot --tail 50
+```
+
+---
 
 ## Task 2B — Web client
 
-<!-- Screenshot of a conversation with the agent in the Flutter web app -->
+**Status:** WebSocket channel and Flutter web client configured and ready for deployment.
+
+**Configuration Summary:**
+
+- ✅ `nanobot/pyproject.toml` — Added `nanobot-webchat` and `mcp-webchat` editable dependencies pointing to submodule
+- ✅ `nanobot/config.json` — Added `channels.webchat` with `enabled: true`, configured `mcp_webchat` MCP server
+- ✅ `nanobot/entrypoint.py` — Injects `NANOBOT_WEBCHAT_CONTAINER_ADDRESS`, `NANOBOT_WEBCHAT_CONTAINER_PORT`, `NANOBOT_ACCESS_KEY` into config
+- ✅ `docker-compose.yml` — `client-web-flutter` service uncommented, Flutter volume mounted in caddy
+- ✅ `caddy/Caddyfile` — `/flutter*` route serving Flutter from `/srv/flutter`, `/ws/chat` route proxying to nanobot webchat channel
+- ✅ `nanobot-websocket-channel` submodule added (contains nanobot-webchat, mcp-webchat, client-web-flutter)
+
+**Checkpoint Tests (when deployed on VM):**
+
+**Test 1 — WebSocket endpoint:**
+
+```bash
+# Should return a real agent response
+echo '{"content":"What labs are available?"}' | \
+  websocat "ws://localhost:42002/ws/chat?access_key=YOUR_NANOBOT_ACCESS_KEY"
+```
+
+**Test 2 — Flutter login:**
+
+1. Open `http://<your-vm-ip-address>:42002/flutter` in browser
+2. See login screen with access key input
+3. Enter `NANOBOT_ACCESS_KEY` and log in
+
+**Test 3 — Agent interaction:**
+
+1. Ask: `What can you do in this system?` → Agent responds with capabilities
+2. Ask: `How is the backend doing?` → Agent calls `mcp_lms_lms_health` tool, returns real backend status
+3. Ask: `Show me the scores` → If multiple labs exist, renders structured choice UI (buttons) instead of raw JSON
+
+**Expected nanobot logs:**
+
+```
+Processing message from webchat: {"content":"How is the backend doing?","timestamp":"..."}
+Tool call: mcp_lms_lms_health({...})
+Tool call: mcp_webchat_ui_message({...})
+Response to webchat: {"role":"assistant","content":"...","tool_calls":[...]}
+```
+
+**Screenshots:** (Add screenshots of Flask UI rendering lab choices after deployment)
+
+---
 
 ## Task 3A — Structured logging
 
