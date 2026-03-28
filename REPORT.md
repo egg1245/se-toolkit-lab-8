@@ -146,6 +146,8 @@ Response to webchat: {"role":"assistant","content":"...","tool_calls":[...]}
 - ✅ `nanobot/pyproject.toml` — Updated to include `mcp-obs` dependency
 - ✅ `nanobot/config.json` — Already configured with `obs` MCP server
 - ✅ `nanobot/entrypoint.py` — Already handles `NANOBOT_VICTORIALOGS_URL` and `NANOBOT_VICTORIATRACES_URL` env vars
+- ✅ `pyproject.toml` — Uncommented mcp-obs in workspace.members and tool.uv.sources
+- ✅ `docker-compose.yml` — Already passes NANOBOT_VICTORIALOGS_URL and NANOBOT_VICTORIATRACES_URL to nanobot service
 
 **MCP Tools Available:**
 
