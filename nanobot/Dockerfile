@@ -16,8 +16,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends git && \
   rm -rf /tmp/repo && \
   pip install --no-cache-dir -e ./mcp/mcp-lms && \
   pip install --no-cache-dir -e ./mcp/mcp-obs && \
-  pip install --no-cache-dir -e ./nanobot-websocket-channel/nanobot-channel-protocol && \
-  pip install --no-cache-dir -e ./nanobot-websocket-channel/nanobot-webchat && \
+  pip install --no-cache-dir --ignore-requires-python -e ./nanobot-websocket-channel/nanobot-channel-protocol && \
+  pip install --no-cache-dir --ignore-requires-python -e ./nanobot-websocket-channel/nanobot-webchat && \
   pip install --no-cache-dir nanobot-ai && \
   pip install --no-cache-dir -e ./nanobot
 
