@@ -24,8 +24,8 @@ RUN pip install --no-cache-dir -e ./mcp/mcp-lms \
   && pip install --no-cache-dir -e ./mcp/mcp-obs
 
 # Install nanobot-channel-protocol and nanobot-webchat
-RUN pip install --no-cache-dir -e nanobot-websocket-channel/nanobot-channel-protocol && \
-    pip install --no-cache-dir -e nanobot-websocket-channel/nanobot-webchat
+RUN pip install --no-cache-dir -e ./nanobot-websocket-channel/nanobot-channel-protocol && \
+    pip install --no-cache-dir -e ./nanobot-websocket-channel/nanobot-webchat
 
 # Install nanobot-ai and nanobot-agent
 RUN pip install --no-cache-dir nanobot-ai \
