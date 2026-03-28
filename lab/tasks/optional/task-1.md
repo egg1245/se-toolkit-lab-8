@@ -22,6 +22,13 @@ The Telegram Bot API (`api.telegram.org`) is blocked from most Russian servers. 
    - If the bot runs on your local machine or another host, use the public/proxied endpoint instead, for example `NANOBOT_WS_URL=ws://localhost:42002/ws/chat` with SSH port forwarding to the VM
    - `depends_on: nanobot`
 
+   If you use the repository root `uv` workspace tooling, also uncomment the
+   matching `nanobot-websocket-channel/client-telegram-bot` lines in the root
+   `pyproject.toml` under:
+
+   - `[tool.uv.workspace].members`
+   - `[tool.uv.sources]`
+
    Do not append `?access_key=...` yourself — the bot adds that query parameter automatically.
    If you run the bot outside Docker Compose, use the same environment variables and start it from `nanobot-websocket-channel/client-telegram-bot/` by following that repo's README.
 

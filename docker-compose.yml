@@ -100,12 +100,20 @@ services:
   #       workspace: .
   #     args:
   #       REGISTRY_PREFIX_DOCKER_HUB: ${REGISTRY_PREFIX_DOCKER_HUB:-}
+  #       APP_UID: ${HOST_UID:-1000}
+  #       APP_GID: ${HOST_GID:-1000}
   #   restart: unless-stopped
+  #   user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
   #   networks:
   #     - lms-network
   #   volumes:
-  #     - ./nanobot/workspace/AGENTS.md:/app/nanobot/workspace/AGENTS.md
-  #     - ./nanobot/workspace/skills:/app/nanobot/workspace/skills
+  #     # Mount only the parts nanobot needs to edit or read from the repo.
+  #     - ./nanobot:/app/nanobot
+  #     - ./mcp:/app/mcp
+  #     - ./nanobot-websocket-channel:/app/nanobot-websocket-channel
+  #     - ./wiki:/app/wiki:ro
+  #     - ./lab:/app/lab:ro
+  #     - ./contributing:/app/contributing:ro
   #   environment:
   #     # Task 1 used VM-shell URLs. In Docker, use service-to-service URLs instead.
   #     - LLM_API_KEY=${LLM_API_KEY:?'LLM_API_KEY is required'}

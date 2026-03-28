@@ -31,7 +31,17 @@ The backend version in this lab contains a planted bug in a failure path. To sur
    docker compose --env-file .env.docker.secret stop postgres
    ```
 
-3. Open the Flutter app, trigger a request, and keep that chat open. You will reuse the same chat in Part B.
+3. Open the Flutter app, trigger a request that makes nanobot list labs/items, and keep that chat open. You will reuse the same chat in Part B.
+
+   Good prompts for this planted bug are:
+
+   - **"What labs are available?"**
+   - **"List the labs"**
+   - **"Which lab should I explore?"**
+
+   These prompts typically make nanobot call the LMS tool that lists labs,
+   which reaches the backend `GET /items/` route. That route contains the
+   planted bug for this task.
 
    Good nanobot logs to expect in this part include tool calls such as:
 
@@ -45,7 +55,13 @@ The backend version in this lab contains a planted bug in a failure path. To sur
 
    The response should be a single coherent investigation that cites at least one recent error log and one matching trace, and names the affected service plus the root failing operation.
 
-   Trigger the failure immediately before asking so the agent works with fresh observability data instead of stale older errors.
+   Trigger the failure immediately before asking so the agent works with fresh
+   observability data instead of stale older errors.
+
+   For this planted bug, the key discrepancy to notice is:
+
+   - logs and traces show a real PostgreSQL / SQLAlchemy failure
+   - the backend response path misreports it as `404 Items not found`
 
 <!-- STOP -->
 > [!CAUTION]
@@ -141,10 +157,15 @@ The backend version in this lab contains a planted bug in a failure path. To sur
 
 3. Trigger the failure path again after the redeploy:
    - Stop PostgreSQL
-   - Make a request through the Flutter app
+   - Make a request through the Flutter app that asks nanobot to list or choose labs
    - Ask the agent: **"What went wrong?"**
 
-   After your fix, the agent should now surface the real underlying backend or database failure instead of a broken exception-handling path. When judging the result, focus on the newest post-redeploy request rather than older stale logs or traces from before the fix.
+   Before the fix, this request path tends to return a misleading `404 Items not
+   found` even though PostgreSQL is down. After your fix, the agent should now
+   surface the real underlying backend or database failure instead of that
+   broken exception-handling path. When judging the result, focus on the newest
+   post-redeploy request rather than older stale logs or traces from before the
+   fix.
 
    When verifying the fix, focus on the newest logs and traces after the redeploy. Older pre-fix `404` records may still be visible in broader time windows.
 

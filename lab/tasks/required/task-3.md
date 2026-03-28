@@ -139,6 +139,12 @@ The agent still can't access logs or traces — only you can, through the UIs. L
 
 1. Implement new MCP tools that query VictoriaLogs and VictoriaTraces. Add them to a separate MCP server such as `mcp/mcp-obs/`, or use an equivalent new MCP module. You need at least:
 
+   If you use the repository root `uv` workspace tooling, also uncomment the
+   matching `mcp/mcp-obs` lines in the root `pyproject.toml` under:
+
+   - `[tool.uv.workspace].members`
+   - `[tool.uv.sources]`
+
    **Log tools (VictoriaLogs HTTP API — port 9428):**
    - `logs_search` — search logs by keyword and/or time range
    - `logs_error_count` — count errors per service over a time window
