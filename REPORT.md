@@ -139,7 +139,7 @@ Response to webchat: {"role":"assistant","content":"...","tool_calls":[...]}
 - ✅ `mcp/mcp-obs/src/mcp_obs/` — Complete observability module:
   - `client.py` — HTTP client for VictoriaLogs and VictoriaTraces APIs
   - `server.py` — MCP server exposing tools to nanobot
-  - `tools.py` — Tool implementations: `obs_logs_search`, `obs_logs_error_count`, `obs_traces_list`, `obs_traces_get`
+  - `tools.py` — Tool implementations: `logs_search`, `logs_error_count`, `traces_list`, `traces_get`
   - `settings.py` — Configuration from environment variables
   - `__init__.py`, `__main__.py` — Module initialization
 - ✅ `nanobot/workspace/skills/observability/SKILL.md` — Agent guidance for using observability tools
@@ -149,10 +149,10 @@ Response to webchat: {"role":"assistant","content":"...","tool_calls":[...]}
 
 **MCP Tools Available:**
 
-1. `obs_logs_search(query, limit)` — Search VictoriaLogs with LogsQL query
-2. `obs_logs_error_count(service_name, time_range)` — Count errors in a service
-3. `obs_traces_list(service_name, limit)` — List recent traces for a service
-4. `obs_traces_get(trace_id)` — Fetch a specific trace by ID
+1. `logs_search(query, limit)` — Search VictoriaLogs with LogsQL query
+2. `logs_error_count(service_name, time_range)` — Count errors in a service
+3. `traces_list(service_name, limit)` — List recent traces for a service
+4. `traces_get(trace_id)` — Fetch a specific trace by ID
 
 **Test Instructions (on VM after deployment):**
 
@@ -178,7 +178,7 @@ docker compose start postgres
 
 - Agent response to "Any LMS backend errors in the last 10 minutes?" (normal conditions)
 - Agent response to the same question after stopping PostgreSQL and triggering failures
-- Evidence of tool calls: `obs_logs_error_count`, `obs_logs_search`, `obs_traces_get` in nanobot logs
+- Evidence of tool calls: `logs_error_count`, `logs_search`, `traces_get` in nanobot logs
 
 ## Task 4A — Multi-step investigation
 
