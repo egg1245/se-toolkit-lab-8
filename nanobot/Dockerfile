@@ -26,6 +26,7 @@ COPY workspace/ /app/agent-workspace/
 RUN chmod -R 777 /app/agent-workspace
 COPY entrypoint.py /app/entrypoint.py
 COPY --from=workspace mcp ./mcp/
+COPY --from=workspace nanobot-websocket-channel ./nanobot-websocket-channel/
 
 ENV PYTHONUNBUFFERED=1
 
