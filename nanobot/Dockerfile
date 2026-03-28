@@ -4,12 +4,16 @@ FROM ${REGISTRY_PREFIX_DOCKER_HUB}python:3.12-slim
 
 WORKDIR /build
 
-# Copy workspace root
+# Copy workspace root (excluding .git to reduce size)
 COPY --from=workspace . .
 
-# Install git and all Python packages
+# Install git, clone submodule properly, and install all Python packages
 RUN apt-get update && apt-get install -y --no-install-recommends git && \
   rm -rf /var/lib/apt/lists/* && \
+  rm -rf nanobot-websocket-channel && \
+  git clone --depth 1 --recurse-submodules https://github.com/egg1245/se-toolkit-lab-8.git /tmp/repo && \
+  cp -r /tmp/repo/nanobot-websocket-channel /build/ && \
+  rm -rf /tmp/repo && \
   pip install --no-cache-dir -e ./mcp/mcp-lms && \
   pip install --no-cache-dir -e ./mcp/mcp-obs && \
   pip install --no-cache-dir -e ./nanobot-websocket-channel/nanobot-channel-protocol && \
