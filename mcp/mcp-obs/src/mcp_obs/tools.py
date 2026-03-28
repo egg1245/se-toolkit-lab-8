@@ -102,7 +102,7 @@ def _require_traces_get_query(args: BaseModel) -> TracesGetQuery:
 
 TOOL_SPECS = (
     ToolSpec(
-        "obs_logs_search",
+        "logs_search",
         "Search VictoriaLogs for specific log entries using LogsQL query language. "
         "Useful for finding errors, tracing requests, or understanding what happened at a specific time. "
         "Example: 'service.name:\"backend\" severity:ERROR' or '_time:10m event:db_error'",
@@ -110,7 +110,7 @@ TOOL_SPECS = (
         _logs_search,
     ),
     ToolSpec(
-        "obs_logs_error_count",
+        "logs_error_count",
         "Count recent errors in a specific service over a time window. "
         "Returns the number of error-level log entries and examples of recent errors. "
         "Useful for quick health checks: 'Any errors in the backend in the last 10 minutes?'",
@@ -118,18 +118,18 @@ TOOL_SPECS = (
         _logs_error_count,
     ),
     ToolSpec(
-        "obs_traces_list",
+        "traces_list",
         "List recent distributed traces for a service. Each trace represents one request through the system. "
         "Returns trace IDs and basic metadata. Use this to find the trace ID of a request, "
-        "then fetch it with obs_traces_get for detailed span information.",
+        "then fetch it with traces_get for detailed span information.",
         TracesListQuery,
         _traces_list,
     ),
     ToolSpec(
-        "obs_traces_get",
+        "traces_get",
         "Fetch a specific trace by ID to see the complete request flow across services. "
         "Shows which services handled the request, how long each step took, and where errors occurred. "
-        "Trace IDs appear in log entries or can be obtained from obs_traces_list.",
+        "Trace IDs appear in log entries or can be obtained from traces_list.",
         TracesGetQuery,
         _traces_get,
     ),
