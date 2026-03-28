@@ -6,11 +6,16 @@ WORKDIR /build
 
 # Copy workspace root
 COPY --from=workspace . .
-# Explicitly copy the websocket channel if it wasn't copied
-COPY --from=workspace nanobot-websocket-channel/ nanobot-websocket-channel/
 
-# Verify
-RUN ls -la nanobot-websocket-channel/nanobot-channel-protocol/ 2>&1 | head -5 || echo "STILL NOT FOUND"
+# CRITICAL FIX: Gitsubmodules don't get copied via COPY --from=workspace
+# Clone nanobot-websocket-channel directly from GitHub if it's empty
+RUN if [ ! -d nanobot-websocket-channel/nanobot-webchat/src ] || [ -z "$(ls -A nanobot-websocket-channel/nanobot-webchat/src 2>/dev/null)" ]; then \
+  echo "Cloning nanobot-websocket-channel from GitHub..."; \
+  rm -rf nanobot-websocket-channel; \
+  git clone --depth 1 https://github.com/egg1245/se-toolkit-lab-8.git /tmp/repo && \
+  cp -r /tmp/repo/nanobot-websocket-channel /build/ && \
+  rm -rf /tmp/repo; \
+  fi
 
 # Install local MCP packages FIRST (so they're available during nanobot build)
 RUN pip install --no-cache-dir -e ./mcp/mcp-lms \
