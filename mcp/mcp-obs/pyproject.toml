@@ -2,7 +2,7 @@
 name = "mcp-obs"
 version = "1.0.0"
 description = "MCP server for querying VictoriaLogs and VictoriaTraces observability data"
-requires-python = "==3.14.*"
+requires-python = ">=3.12,<4"
 dependencies = [
     "httpx>=0.28.0,<1.0.0",
     "mcp>=1.26.0,<2.0.0",
