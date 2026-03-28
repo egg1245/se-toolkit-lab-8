@@ -10,12 +10,15 @@ COPY --from=workspace . .
 # CRITICAL FIX: Install git and clone nanobot-websocket-channel in ONE command
 # (gitsubmodules don't get copied via COPY --from=workspace due to git config)
 RUN apt-get update && apt-get install -y --no-install-recommends git && \
-  if [ ! -d nanobot-websocket-channel/nanobot-webchat/src ] || [ -z "$(ls -A nanobot-websocket-channel/nanobot-webchat/src 2>/dev/null)" ]; then \
-  echo "Cloning nanobot-websocket-channel from GitHub..."; \
-  rm -rf nanobot-websocket-channel; \
-  git clone --depth 1 https://github.com/egg1245/se-toolkit-lab-8.git /tmp/repo && \
-  cp -r /tmp/repo/nanobot-websocket-channel /build/ && \
-  rm -rf /tmp/repo; \
+  echo "Checking if nanobot-websocket-channel is populated..." && \
+  if [ ! -d nanobot-websocket-channel ] || [ -z "$(find nanobot-websocket-channel -name 'pyproject.toml' 2>/dev/null)" ]; then \
+    echo "nanobot-websocket-channel not found or empty. Cloning from GitHub..."; \
+    rm -rf nanobot-websocket-channel; \
+    git clone --depth 1 https://github.com/egg1245/se-toolkit-lab-8.git /tmp/repo && \
+    cp -r /tmp/repo/nanobot-websocket-channel /build/ && \
+    rm -rf /tmp/repo; \
+  else \
+    echo "nanobot-websocket-channel found and populated."; \
   fi && \
   rm -rf /var/lib/apt/lists/*
 
