@@ -11,6 +11,8 @@ WORKDIR /build
 
 # Install nanobot-ai and local MCP packages
 RUN pip install --no-cache-dir nanobot-ai \
+  && pip install --no-cache-dir nanobot-webchat \
+  && pip install --no-cache-dir mcp-webchat \
   && pip install --no-cache-dir -e /build/mcp/mcp-lms \
   && pip install --no-cache-dir -e /build/mcp/mcp-obs
 
