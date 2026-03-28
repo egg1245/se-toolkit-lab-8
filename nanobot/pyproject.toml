@@ -1,0 +1,17 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nanobot-agent"
+version = "0.1.0"
+description = "LMS agent powered by nanobot-ai"
+dependencies = [
+  "nanobot-ai",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nanobot_agent"]
+
+[tool.uv]
+exclude-newer = "2025-03-28"
